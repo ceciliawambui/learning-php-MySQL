@@ -8,16 +8,26 @@ if(isset($_POST['submit'])){
     $pwd=$_POST['pwd'];
     if (empty($first)|| empty($last) ||empty($email) || empty($uid) || empty($pwd)){
         header("Location: ../error-handler.php?signup=empty");
+        exit();
     }else{
-        if(filter_var($email, FILTER_VALIDATE_EMAIL)){
-            header("Location: ../error-handler.php?signup=invalidemail");
+        if(!preg_match("/^[a-zA-Z]*$/", $first) || !preg_match("/^[a-zA-Z]*$/", $last)){
+            header("Location: ../error-handler?signup=char");
+            exit();
         }else{
-            echo "Sign up the user!";
+            if(filter_var($email, FILTER_VALIDATE_EMAIL)){
+                header("Location: ../error-handler.php?signup=invalidemail");
+                exit();
+            }else{
+                header("Location: ../error-handler?signup=success");
+                exit();
+            }
+
         }
+      
 
     }
 
 }else{
-    header("Location: ../error-handler.php?signup=error");
+    header("Location: ../error-handler.php");
 }
 ?>
